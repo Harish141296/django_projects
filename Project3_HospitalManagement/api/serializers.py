@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from .models import Patient, Doctor, Appointment, MedicalRecord
+from .models import Patient, Doctor, Appointment, MedicalRecord, Billing
 
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,4 +19,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
 class MedicalRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalRecord 
+        fields = '__all__'
+
+class BillingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Billing 
         fields = '__all__'

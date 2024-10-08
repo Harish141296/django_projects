@@ -33,3 +33,16 @@ class MedicalRecord(models.Model):
     def __str__(self):
         return f"{self.patient.name} - {self.notes[:15]}..."
     
+class Billing(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    appointment = models.ForeignKey(Appointment, on_delete= models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places = 2)
+    payment_status = models.CharField(max_length=20, choices = [
+        ('paid','Paid'),
+        ('unpaid','Unpaid'),
+        ('pending','Pending'),
+    ])
+    created_at = models.DateTimeField(auto_now_add = True) 
+    
+    def __str__(self):
+        return f"Billing for {self.patient.name}: {self.amount} - {self.payment_status}"
