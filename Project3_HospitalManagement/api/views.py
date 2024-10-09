@@ -125,13 +125,82 @@ class AppointmentDetailAPIView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
 class MedicalRecordAPIView(APIView):
-    pass 
+    def get(self, request):
+        records = MedicalRecord.objects.all()
+        serializer = MedicalRecordSerializer(records, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        try:
+            serializer = MedicalRecordSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except MedicalRecord.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class MedicalRecordDetailAPIView(APIView):
-    pass 
-
+    def get(self, request, pk):
+        try:
+            medicalrecord = MedicalRecord.objects.get(pk=pk)
+            serializer = MedicalRecordSerializer(medicalrecord)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        except MedicalRecord.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    def put(self, request, pk):
+        try:
+            medicalrecord = MedicalRecord.objects.get(pk=pk)
+            serializer = MedicalRecordSerializer(medicalrecord, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except MedicalRecord.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    def delete(self, request, pk):
+        try:
+            medicalrecord = MedicalRecord.objects.get(pk=pk)
+            medicalrecord.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except MedicalRecord.DoesNotExist:
+            return Response(status = status.HTTP_404_NOT_FOUND)
+        
 class BillingAPIView(APIView):
-    pass 
+    def get(self, request):
+        billing = Billing.objects.all()
+        serializer = BillingSerializer(billing)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def post(self, request):
+        try:
+            serializer = BillingSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Billing.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class BillingDetailAPIView(APIView):
-    pass 
+    def get(self, request, pk):
+        billing = Billing.objects.get(pk=pk)
+        serializer = BillingSerializer(billing)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def put(self, request, pk):
+        try:
+            billing = Billing.objects.get(pk=pk)
+            serializer = BillingSerializer(billing)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Billing.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    def delete(self, request, pk):
+        try:
+            billing=Billing.objects.get(pk=pk)
+            billing.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Billing.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
