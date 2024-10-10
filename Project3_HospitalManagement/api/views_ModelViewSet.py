@@ -23,3 +23,4 @@ class MedicalRecordViewSet(viewsets.ModelViewSet):
 class BillingViewSet(viewsets.ModelViewSet):
     queryset = Billing.objects.all()
     serializer_class = BillingSerializer 
+    
